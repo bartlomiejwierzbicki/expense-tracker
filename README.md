@@ -7,4 +7,3 @@ Expense tracker, React.js
 npm install
 ```
 
-Need to connect to backend localhost:5000/api/items
