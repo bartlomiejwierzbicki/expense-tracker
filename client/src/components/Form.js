@@ -5,14 +5,19 @@ const Form = props => {
     <form className="App" onSubmit={props.onSubmit}>
       <label>
         Amount:{" "}
-        <input type="number" value={props.amount} onChange={props.onChange} />{" "}
+        <input
+          type="number"
+          required={true}
+          value={props.amount}
+          onChange={props.onChange}
+        />{" "}
         PLN
       </label>
       <br></br>
       <label>
         Select category:{" "}
         <select onChange={props.onChangeCategory}>
-          {["Food", "Home", "Other", "Salary"].map((item, index) => (
+          {props.categorySets.map((item, index) => (
             <option key={index} value={item}>
               {item}
             </option>

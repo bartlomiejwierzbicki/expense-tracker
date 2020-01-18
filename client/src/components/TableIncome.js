@@ -1,6 +1,6 @@
 import React from "react";
 
-const Table = props => {
+const TableIncome = props => {
   const indexOfLastTodo = props.currentPage * props.todosPerPage;
   const indexOfFirstTodo = indexOfLastTodo - props.todosPerPage;
   const pageNumbers = [];
@@ -23,23 +23,8 @@ const Table = props => {
   });
   return (
     <div>
+      <p>Income</p>
       <table>
-        {/* <thead>
-        <tr>
-          <th>
-            <input></input>
-          </th>
-          <th>
-            <input
-              value={props.filterText}
-              onChange={props.onChangeFilter}
-            ></input>
-          </th>
-          <th>
-            <input></input>
-          </th>
-        </tr>
-      </thead> */}
         <thead>
           <tr>
             <th>Amount</th>
@@ -49,9 +34,6 @@ const Table = props => {
         </thead>
         {props.data
           .slice(indexOfFirstTodo, indexOfLastTodo)
-          // .filter(name => {
-          //   return name.category.indexOf(props.filterText) >= 0;
-          // })
           .map((item, index) => (
             <tbody key={index}>
               <tr>
@@ -80,4 +62,4 @@ const Table = props => {
   );
 };
 
-export default Table;
+export default TableIncome;
