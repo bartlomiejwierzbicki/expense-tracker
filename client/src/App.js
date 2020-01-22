@@ -1,12 +1,22 @@
 import React from "react";
 import axios from "axios";
 import "./App.css";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  NavLink
+} from "react-router-dom";
 import Form from "./components/Form";
 import RoundChart from "./components/RoundChart";
 import LineChart from "./components/LineChart";
-import TableExpenses from "./components/TableExpenses";
-import TableIncome from "./components/TableIncome";
+import TableData from "./components/TableData";
+
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import Container from "@material-ui/core/Container";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -14,7 +24,9 @@ export default class App extends React.Component {
     this.state = {
       amount: "",
       category: "Food",
-      categorySets: ["Food", "Home", "Transport", "Health", "Fun", "Other"],
+      categoryIncome: "Salary",
+      expenseCategory: ["Food", "Home", "Transport", "Health", "Fun", "Other"],
+      incomeCategory: ["Salary", "Gift"],
       months: [
         "January",
         "February",
@@ -31,13 +43,12 @@ export default class App extends React.Component {
       ],
       expenses: [],
       incomes: [],
-      // filterText: "",
       date: "",
       currentPage: 1,
       todosPerPage: 10
     };
     this.onChangeCategory = this.onChangeCategory.bind(this);
-    // this.onChangeFilter = this.onChangeFilter.bind(this);
+    this.onChangeCategoryIncome = this.onChangeCategoryIncome.bind(this);
     this.onChangeDate = this.onChangeDate.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
@@ -51,16 +62,22 @@ export default class App extends React.Component {
 
   // INTEGRATION WITH DB
   fetchData = () => {
-    axios.get("http://localhost:5000/api/expense").then(resp => {
-      this.setState({
-        expenses: resp.data
+    axios
+      .all([
+        axios.get("http://localhost:5000/api/expense"),
+        axios.get("http://localhost:5000/api/income")
+      ])
+      .then(
+        axios.spread((...responses) => {
+          this.setState({
+            expenses: responses[0].data,
+            incomes: responses[1].data
+          });
+        })
+      )
+      .catch(errors => {
+        console.log("Error");
       });
-    });
-    axios.get("http://localhost:5000/api/income").then(resp => {
-      this.setState({
-        incomes: resp.data
-      });
-    });
   };
 
   deleteData = (id, event) => {
@@ -68,6 +85,14 @@ export default class App extends React.Component {
     axios({
       method: "delete",
       url: `http://localhost:5000/api/expense/${id}`
+    });
+  };
+
+  deleteDataIncome = (id, event) => {
+    event.preventDefault();
+    axios({
+      method: "delete",
+      url: `http://localhost:5000/api/income/${id}`
     });
   };
 
@@ -85,6 +110,11 @@ export default class App extends React.Component {
   onChangeCategory = event => {
     this.setState({
       category: event.target.value
+    });
+  };
+  onChangeCategoryIncome = event => {
+    this.setState({
+      categoryIncome: event.target.value
     });
   };
 
@@ -109,45 +139,109 @@ export default class App extends React.Component {
       amount: 0
     });
   };
-  // END
 
-  //FILTER
-  /*
-  onChangeFilter = event => {
+  onSubmitIncome = event => {
+    event.preventDefault();
+    axios({
+      method: "post",
+      url: "http://localhost:5000/api/income",
+      data: {
+        category: this.state.categoryIncome,
+        amount: Math.abs(this.state.amount),
+        date: this.state.date
+      }
+    });
     this.setState({
-      filterText: event.target.value
+      amount: 0
     });
   };
-  */
 
   render() {
     return (
       <Router>
-        <div>
-          <nav>
-            <ul>
-              <li>
-                <Link to="/">Home</Link>
-              </li>
-              <li>
-                <Link to="/charts">Charts</Link>
-              </li>
-              <li>
-                <Link to="/expenses">Expenses</Link>
-              </li>
-              <li>
-                <Link to="/incomes">Incomes</Link>
-              </li>
-            </ul>
-          </nav>
+        <Container>
+          <AppBar position="static">
+            <Toolbar>
+              <IconButton edge="start" color="inherit" aria-label="menu">
+                <MenuIcon />
+              </IconButton>
+              <NavLink
+                style={{
+                  color: "white",
+                  textDecoration: "none",
+                  padding: "5px"
+                }}
+                to="/"
+              >
+                Home
+              </NavLink>
+              <NavLink
+                style={{
+                  color: "white",
+                  textDecoration: "none",
+                  padding: "5px"
+                }}
+                to="/expenses"
+              >
+                Expenses
+              </NavLink>
+              <NavLink
+                style={{
+                  color: "white",
+                  textDecoration: "none",
+                  padding: "5px"
+                }}
+                to="/incomes"
+              >
+                Incomes
+              </NavLink>
+            </Toolbar>
+          </AppBar>
 
-          {/* A <Switch> looks through its children <Route>s and
-            renders the first one that matches the current URL. */}
           <Switch>
-            <Route path="/charts">
+            <Route path="/expenses">
+              <TableData
+                handleClick={this.handleClick}
+                currentPage={this.state.currentPage}
+                todosPerPage={this.state.todosPerPage}
+                data={this.state.expenses}
+                deleteData={this.deleteData}
+              />
+              <Form
+                onSubmit={this.onSubmit}
+                onChange={this.onChangeAmount}
+                onChangeCategory={this.onChangeCategory}
+                onChangeDate={this.onChangeDate}
+                categorySets={this.state.expenseCategory}
+                amount={this.state.amount}
+                date={this.state.date}
+                category={this.state.category}
+              ></Form>
+            </Route>
+            <Route path="/incomes">
+              <TableData
+                handleClick={this.handleClick}
+                currentPage={this.state.currentPage}
+                todosPerPage={this.state.todosPerPage}
+                data={this.state.incomes}
+                deleteData={this.deleteDataIncome}
+              />
+              <Form
+                onSubmit={this.onSubmitIncome}
+                onChange={this.onChangeAmount}
+                onChangeCategory={this.onChangeCategoryIncome}
+                onChangeDate={this.onChangeDate}
+                categorySets={this.state.incomeCategory}
+                amount={this.state.amount}
+                date={this.state.date}
+                category={this.state.categoryIncome}
+              ></Form>
+            </Route>
+
+            <Route exact path="/">
               <RoundChart
                 data={this.state.expenses}
-                categorySets={this.state.categorySets}
+                categorySets={this.state.expenseCategory}
               />
               <LineChart
                 months={this.state.months}
@@ -155,82 +249,9 @@ export default class App extends React.Component {
                 incomes={this.state.incomes}
               />
             </Route>
-            <Route path="/expenses">
-              <Form
-                onSubmit={this.onSubmit}
-                onChange={this.onChangeAmount}
-                onChangeCategory={this.onChangeCategory}
-                onChangeDate={this.onChangeDate}
-                categorySets={this.state.categorySets}
-                amount={this.state.amount}
-                date={this.state.date}
-              ></Form>
-              <TableExpenses
-                handleClick={this.handleClick}
-                currentPage={this.state.currentPage}
-                todosPerPage={this.state.todosPerPage}
-                data={this.state.expenses}
-                deleteData={this.deleteData}
-              />
-            </Route>
-            <Route path="/incomes">
-              <TableIncome
-                data={this.state.incomes}
-                currentPage={this.state.currentPage}
-                todosPerPage={this.state.todosPerPage}
-              ></TableIncome>
-            </Route>
-            <Route path="/">
-              <h1>Home</h1>
-            </Route>
           </Switch>
-        </div>
+        </Container>
       </Router>
-      // <div>
-      //   <div>
-      //     <RoundChart
-      //       data={this.state.expenses}
-      //       categorySets={this.state.categorySets}
-      //     />
-      //     <LineChart
-      //       months={this.state.months}
-      //       data={this.state.expenses}
-      //       incomes={this.state.incomes}
-      //     />
-      //     <Form
-      //       onSubmit={this.onSubmit}
-      //       onChange={this.onChangeAmount}
-      //       onChangeCategory={this.onChangeCategory}
-      //       onChangeDate={this.onChangeDate}
-      //       categorySets={this.state.categorySets}
-      //       amount={this.state.amount}
-      //       date={this.state.date}
-      //     ></Form>
-      //     <h1>
-      //       Total:{" "}
-      //       {this.state.incomes
-      //         .map(item => item.amount)
-      //         .reduce((x, y, i) => x + y, 0) -
-      //         this.state.expenses
-      //           .map(item => item.amount)
-      //           .reduce((x, y, i) => x + y, 0)}{" "}
-      //       PLN
-      //     </h1>
-      //     <small>Operations: {this.state.expenses.length}</small>
-      //     <TableExpenses
-      //       handleClick={this.handleClick}
-      //       currentPage={this.state.currentPage}
-      //       todosPerPage={this.state.todosPerPage}
-      //       data={this.state.expenses}
-      //       deleteData={this.deleteData}
-      //     />
-      //     <TableIncome
-      //       data={this.state.incomes}
-      //       currentPage={this.state.currentPage}
-      //       todosPerPage={this.state.todosPerPage}
-      //     ></TableIncome>
-      //   </div>
-      // </div>
     );
   }
 }

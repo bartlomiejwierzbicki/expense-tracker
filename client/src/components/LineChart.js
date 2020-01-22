@@ -24,7 +24,7 @@ const LineChart = props => {
     );
   }
   return (
-    <div style={{ width: "50%"}}>
+    <div style={{ width: "50%" }}>
       <Line
         data={{
           labels: props.months,
