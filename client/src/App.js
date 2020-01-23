@@ -1,20 +1,14 @@
 import React from "react";
 import axios from "axios";
 import "./App.css";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  NavLink
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Form from "./components/Form";
 import RoundChart from "./components/RoundChart";
 import LineChart from "./components/LineChart";
 import TableData from "./components/TableData";
 import InfoCard from "./components/InfoCard";
+import Navigation from "./components/Navigation";
 
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
@@ -160,110 +154,82 @@ export default class App extends React.Component {
   render() {
     return (
       <Router>
-        <AppBar position="static">
-          <Toolbar>
-            <NavLink
-              style={{
-                color: "white",
-                textDecoration: "none",
-                padding: "5px"
-              }}
-              to="/"
-            >
-              Home
-            </NavLink>
-            <NavLink
-              style={{
-                color: "white",
-                textDecoration: "none",
-                padding: "5px"
-              }}
-              to="/expenses"
-            >
-              Expenses
-            </NavLink>
-            <NavLink
-              style={{
-                color: "white",
-                textDecoration: "none",
-                padding: "5px"
-              }}
-              to="/incomes"
-            >
-              Incomes
-            </NavLink>
-          </Toolbar>
-        </AppBar>
-        <Container>
-          <Switch>
-            <Route path="/expenses">
-              <TableData
-                handleClick={this.handleClick}
-                currentPage={this.state.currentPage}
-                todosPerPage={this.state.todosPerPage}
-                data={this.state.expenses}
-                deleteData={this.deleteData}
-              />
-              <Form
-                onSubmit={this.onSubmit}
-                onChange={this.onChangeAmount}
-                onChangeCategory={this.onChangeCategory}
-                onChangeDate={this.onChangeDate}
-                categorySets={this.state.expenseCategory}
-                amount={this.state.amount}
-                date={this.state.date}
-                category={this.state.category}
-              ></Form>
-            </Route>
-            <Route path="/incomes">
-              <TableData
-                handleClick={this.handleClick}
-                currentPage={this.state.currentPage}
-                todosPerPage={this.state.todosPerPage}
-                data={this.state.incomes}
-                deleteData={this.deleteDataIncome}
-              />
-              <Form
-                onSubmit={this.onSubmitIncome}
-                onChange={this.onChangeAmount}
-                onChangeCategory={this.onChangeCategoryIncome}
-                onChangeDate={this.onChangeDate}
-                categorySets={this.state.incomeCategory}
-                amount={this.state.amount}
-                date={this.state.date}
-                category={this.state.categoryIncome}
-              ></Form>
-            </Route>
+        <div style={{ display: "flex" }}>
+          <Navigation></Navigation>
+          <Container style={{ marginTop: "10vh" }} fixed>
+            <Switch>
+              <Route path="/expenses">
+                <TableData
+                  handleClick={this.handleClick}
+                  currentPage={this.state.currentPage}
+                  todosPerPage={this.state.todosPerPage}
+                  data={this.state.expenses}
+                  deleteData={this.deleteData}
+                />
+                <Form
+                  onSubmit={this.onSubmit}
+                  onChange={this.onChangeAmount}
+                  onChangeCategory={this.onChangeCategory}
+                  onChangeDate={this.onChangeDate}
+                  categorySets={this.state.expenseCategory}
+                  amount={this.state.amount}
+                  date={this.state.date}
+                  category={this.state.category}
+                ></Form>
+              </Route>
+              <Route path="/incomes">
+                <TableData
+                  handleClick={this.handleClick}
+                  currentPage={this.state.currentPage}
+                  todosPerPage={this.state.todosPerPage}
+                  data={this.state.incomes}
+                  deleteData={this.deleteDataIncome}
+                />
+                <Form
+                  onSubmit={this.onSubmitIncome}
+                  onChange={this.onChangeAmount}
+                  onChangeCategory={this.onChangeCategoryIncome}
+                  onChangeDate={this.onChangeDate}
+                  categorySets={this.state.incomeCategory}
+                  amount={this.state.amount}
+                  date={this.state.date}
+                  category={this.state.categoryIncome}
+                ></Form>
+              </Route>
 
-            <Route exact path="/">
-              <Grid container spacing={2}>
-                <Grid item xs sm={6}>
-                  <InfoCard
-                    expenseData={this.state.expenses}
-                    incomeData={this.state.incomes}
-                  />
-                </Grid>
-                <Grid item xs sm={6}>
-                  <Paper elevation={2}>
-                    <RoundChart
-                      data={this.state.expenses}
-                      categorySets={this.state.expenseCategory}
+              <Route exact path="/">
+                <Grid container spacing={3}>
+                  <Grid item xs sm={12} lg={6}>
+                    <InfoCard
+                      expenseData={this.state.expenses}
+                      incomeData={this.state.incomes}
                     />
-                  </Paper>
+                  </Grid>
+                  <Grid item xs sm={12} lg={6}>
+                    <Paper
+                      elevation={2}
+                      style={{ height: "40vh", padding: "20px" }}
+                    >
+                      <RoundChart
+                        data={this.state.expenses}
+                        categorySets={this.state.expenseCategory}
+                      />
+                    </Paper>
+                  </Grid>
+                  <Grid item xs sm={12} lg={12}>
+                    <Paper elevation={2}>
+                      <LineChart
+                        months={this.state.months}
+                        data={this.state.expenses}
+                        incomes={this.state.incomes}
+                      />
+                    </Paper>
+                  </Grid>
                 </Grid>
-                <Grid item xs sm={12}>
-                  <Paper elevation={2}>
-                    <LineChart
-                      months={this.state.months}
-                      data={this.state.expenses}
-                      incomes={this.state.incomes}
-                    />
-                  </Paper>
-                </Grid>
-              </Grid>
-            </Route>
-          </Switch>
-        </Container>
+              </Route>
+            </Switch>
+          </Container>
+        </div>
       </Router>
     );
   }
