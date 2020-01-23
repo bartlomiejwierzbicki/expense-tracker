@@ -1,21 +1,23 @@
 import React from "react";
 
-import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 import Button from "@material-ui/core/Button";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import Input from "@material-ui/core/Input";
 
 const Form = props => {
   return (
     <form onSubmit={props.onSubmit}>
-      <TextField
+      <Input
         id="standard-basic"
         label="Amount"
         type="number"
         required={true}
         value={props.amount}
         onChange={props.onChange}
-      />
+        startAdornment={<InputAdornment position="start">PLN</InputAdornment>}
+      ></Input>
       <br />
       <Select
         labelId="demo-mutiple-name-label"
@@ -30,13 +32,13 @@ const Form = props => {
         ))}
       </Select>
       <br />
-      <TextField
+      <Input
         id="date"
         onChange={props.onChangeDate}
         value={props.date}
         type="date"
         required={true}
-      ></TextField>
+      ></Input>
       <br />
       <Button variant="contained" color="primary" type="submit">
         Submit

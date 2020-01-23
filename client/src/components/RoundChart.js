@@ -15,7 +15,6 @@ const RoundChart = props => {
   }
 
   return (
-    <div style={{ width: "50%", float: "right" }}>
       <Doughnut
         // options={{
         //   legend: {
@@ -45,7 +44,6 @@ const RoundChart = props => {
           ]
         }}
       />
-    </div>
   );
 };
 

@@ -31,13 +31,13 @@ const TableData = props => {
     );
   });
   return (
-    <TableContainer component={Paper} elevation={3}>
+    <TableContainer component={Paper} elevation={1}>
       <Table size="small" aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Amount</TableCell>
-            <TableCell>Category</TableCell>
             <TableCell>Date</TableCell>
+            <TableCell>Category</TableCell>
+            <TableCell>Amount</TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>
@@ -46,9 +46,9 @@ const TableData = props => {
             .slice(indexOfFirstTodo, indexOfLastTodo)
             .map((item, index) => (
               <TableRow key={index}>
-                <TableCell>{item.amount}</TableCell>
-                <TableCell>{item.category}</TableCell>
                 <TableCell>{item.date}</TableCell>
+                <TableCell>{item.category}</TableCell>
+                <TableCell>{item.amount} PLN</TableCell>
                 <TableCell>
                   <DeleteIcon
                     style={{ cursor: "pointer" }}

@@ -11,12 +11,13 @@ import Form from "./components/Form";
 import RoundChart from "./components/RoundChart";
 import LineChart from "./components/LineChart";
 import TableData from "./components/TableData";
+import InfoCard from "./components/InfoCard";
 
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Container from "@material-ui/core/Container";
-import IconButton from "@material-ui/core/IconButton";
-import MenuIcon from "@material-ui/icons/Menu";
+import Grid from "@material-ui/core/Grid";
+import Paper from "@material-ui/core/Paper";
 
 export default class App extends React.Component {
   constructor(props) {
@@ -26,7 +27,7 @@ export default class App extends React.Component {
       category: "Food",
       categoryIncome: "Salary",
       expenseCategory: ["Food", "Home", "Transport", "Health", "Fun", "Other"],
-      incomeCategory: ["Salary", "Gift"],
+      incomeCategory: ["Salary", "Gift", "Other"],
       months: [
         "January",
         "February",
@@ -159,45 +160,41 @@ export default class App extends React.Component {
   render() {
     return (
       <Router>
+        <AppBar position="static">
+          <Toolbar>
+            <NavLink
+              style={{
+                color: "white",
+                textDecoration: "none",
+                padding: "5px"
+              }}
+              to="/"
+            >
+              Home
+            </NavLink>
+            <NavLink
+              style={{
+                color: "white",
+                textDecoration: "none",
+                padding: "5px"
+              }}
+              to="/expenses"
+            >
+              Expenses
+            </NavLink>
+            <NavLink
+              style={{
+                color: "white",
+                textDecoration: "none",
+                padding: "5px"
+              }}
+              to="/incomes"
+            >
+              Incomes
+            </NavLink>
+          </Toolbar>
+        </AppBar>
         <Container>
-          <AppBar position="static">
-            <Toolbar>
-              <IconButton edge="start" color="inherit" aria-label="menu">
-                <MenuIcon />
-              </IconButton>
-              <NavLink
-                style={{
-                  color: "white",
-                  textDecoration: "none",
-                  padding: "5px"
-                }}
-                to="/"
-              >
-                Home
-              </NavLink>
-              <NavLink
-                style={{
-                  color: "white",
-                  textDecoration: "none",
-                  padding: "5px"
-                }}
-                to="/expenses"
-              >
-                Expenses
-              </NavLink>
-              <NavLink
-                style={{
-                  color: "white",
-                  textDecoration: "none",
-                  padding: "5px"
-                }}
-                to="/incomes"
-              >
-                Incomes
-              </NavLink>
-            </Toolbar>
-          </AppBar>
-
           <Switch>
             <Route path="/expenses">
               <TableData
@@ -239,15 +236,31 @@ export default class App extends React.Component {
             </Route>
 
             <Route exact path="/">
-              <RoundChart
-                data={this.state.expenses}
-                categorySets={this.state.expenseCategory}
-              />
-              <LineChart
-                months={this.state.months}
-                data={this.state.expenses}
-                incomes={this.state.incomes}
-              />
+              <Grid container spacing={2}>
+                <Grid item xs sm={6}>
+                  <InfoCard
+                    expenseData={this.state.expenses}
+                    incomeData={this.state.incomes}
+                  />
+                </Grid>
+                <Grid item xs sm={6}>
+                  <Paper elevation={2}>
+                    <RoundChart
+                      data={this.state.expenses}
+                      categorySets={this.state.expenseCategory}
+                    />
+                  </Paper>
+                </Grid>
+                <Grid item xs sm={12}>
+                  <Paper elevation={2}>
+                    <LineChart
+                      months={this.state.months}
+                      data={this.state.expenses}
+                      incomes={this.state.incomes}
+                    />
+                  </Paper>
+                </Grid>
+              </Grid>
             </Route>
           </Switch>
         </Container>
