@@ -142,7 +142,7 @@ export default function Navigation() {
           </IconButton>
         </div>
         <Divider />
-        <NavLink to="/" style={{ textDecoration: "none" }}>
+        <NavLink to="/" style={{ textDecoration: "none", color:"black" }}>
           <List>
             <ListItem button key={1}>
               <ListItemIcon>
@@ -152,7 +152,7 @@ export default function Navigation() {
             </ListItem>
           </List>
         </NavLink>
-        <NavLink to="/expenses" style={{ textDecoration: "none" }}>
+        <NavLink to="/expenses" style={{ textDecoration: "none", color:"black" }}>
           <List>
             <ListItem button key={2}>
               <ListItemIcon>
@@ -162,7 +162,7 @@ export default function Navigation() {
             </ListItem>
           </List>
         </NavLink>
-        <NavLink to="/incomes" style={{ textDecoration: "none" }}>
+        <NavLink to="/incomes" style={{ textDecoration: "none", color:"black" }}>
           <List>
             <ListItem button key={3}>
               <ListItemIcon>

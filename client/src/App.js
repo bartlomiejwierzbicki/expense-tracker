@@ -35,20 +35,17 @@ export default class App extends React.Component {
       ],
       expenses: [],
       incomes: [],
-      date: "",
-      currentPage: 1,
       expenseCategory: ["Food", "Home", "Transport", "Health", "Fun", "Other"],
       incomeCategory: ["Salary", "Gift", "Other"],
-      todosPerPage: 10,
       expensesColumn: [
-        { title: 'Date', field: 'date', type: "date" },
-        { title: 'Category', field: 'category', lookup: { Food: "Food", Home: "Home", Transport: "Transport", Health: "Health", Fun: "Fun", Other: "Other" } },
-        { title: 'Amount', field: 'amount', type: 'currency' },
+        { title: 'Date', field: 'date', type: "date", initialEditValue: new Date() },
+        { title: 'Category', field: 'category', lookup: { Food: "Food", Home: "Home", Transport: "Transport", Health: "Health", Fun: "Fun", Other: "Other" }, initialEditValue: "Food" },
+        { field: 'amount', type: "currency" },
       ],
       incomesColumn: [
         { title: 'Date', field: 'date', type: "date" },
         { title: 'Category', field: 'category', lookup: { Salary: "Salary", Gift: "Gift", Other: "Other" } },
-        { title: 'Amount', field: 'amount', type: 'currency' },
+        { field: 'amount', type: 'currency' },
       ]
     };
   }
