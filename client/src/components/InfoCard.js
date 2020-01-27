@@ -3,8 +3,6 @@ import React from "react";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 import Paper from "@material-ui/core/Paper";
-import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
 
 const InfoCard = props => {
   const income = props.incomeData
@@ -14,7 +12,7 @@ const InfoCard = props => {
     .map(item => item.amount)
     .reduce((x, y) => x + y, 0);
   return (
-    <Paper style={{ padding: "20px", height: "40vh" }}>
+    <Paper style={{ padding: "5%" }}>
       <Typography color="primary" variant="h3">
         Balance
       </Typography>

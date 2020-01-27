@@ -2,7 +2,6 @@ import React from "react";
 import axios from "axios";
 import "./App.css";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Form from "./components/Form";
 import RoundChart from "./components/RoundChart";
 import LineChart from "./components/LineChart";
 import TableData from "./components/TableData";
@@ -20,8 +19,6 @@ export default class App extends React.Component {
       amount: "",
       category: "Food",
       categoryIncome: "Salary",
-      expenseCategory: ["Food", "Home", "Transport", "Health", "Fun", "Other"],
-      incomeCategory: ["Salary", "Gift", "Other"],
       months: [
         "January",
         "February",
@@ -40,22 +37,26 @@ export default class App extends React.Component {
       incomes: [],
       date: "",
       currentPage: 1,
-      todosPerPage: 10
+      expenseCategory: ["Food", "Home", "Transport", "Health", "Fun", "Other"],
+      incomeCategory: ["Salary", "Gift", "Other"],
+      todosPerPage: 10,
+      expensesColumn: [
+        { title: 'Date', field: 'date', type: "date" },
+        { title: 'Category', field: 'category', lookup: { Food: "Food", Home: "Home", Transport: "Transport", Health: "Health", Fun: "Fun", Other: "Other" } },
+        { title: 'Amount', field: 'amount', type: 'currency' },
+      ],
+      incomesColumn: [
+        { title: 'Date', field: 'date', type: "date" },
+        { title: 'Category', field: 'category', lookup: { Salary: "Salary", Gift: "Gift", Other: "Other" } },
+        { title: 'Amount', field: 'amount', type: 'currency' },
+      ]
     };
-    this.onChangeCategory = this.onChangeCategory.bind(this);
-    this.onChangeCategoryIncome = this.onChangeCategoryIncome.bind(this);
-    this.onChangeDate = this.onChangeDate.bind(this);
-    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
     this.fetchData();
   }
-  componentDidUpdate() {
-    this.fetchData();
-  }
 
-  // INTEGRATION WITH DB
   fetchData = () => {
     axios
       .all([
@@ -73,82 +74,8 @@ export default class App extends React.Component {
       .catch(errors => {
         console.log("Error");
       });
-  };
 
-  deleteData = (id, event) => {
-    event.preventDefault();
-    axios({
-      method: "delete",
-      url: `http://localhost:5000/api/expense/${id}`
-    });
-  };
-
-  deleteDataIncome = (id, event) => {
-    event.preventDefault();
-    axios({
-      method: "delete",
-      url: `http://localhost:5000/api/income/${id}`
-    });
-  };
-
-  handleClick(event) {
-    this.setState({
-      currentPage: Number(event.target.id)
-    });
-  }
-
-  // FOR THE FORMEXPENSES
-  onChangeAmount = event => {
-    this.setState({ amount: event.target.value });
-  };
-
-  onChangeCategory = event => {
-    this.setState({
-      category: event.target.value
-    });
-  };
-  onChangeCategoryIncome = event => {
-    this.setState({
-      categoryIncome: event.target.value
-    });
-  };
-
-  onChangeDate = event => {
-    this.setState({
-      date: event.target.value
-    });
-  };
-
-  onSubmit = event => {
-    event.preventDefault();
-    axios({
-      method: "post",
-      url: "http://localhost:5000/api/expense",
-      data: {
-        category: this.state.category,
-        amount: -Math.abs(this.state.amount),
-        date: this.state.date
-      }
-    });
-    this.setState({
-      amount: 0
-    });
-  };
-
-  onSubmitIncome = event => {
-    event.preventDefault();
-    axios({
-      method: "post",
-      url: "http://localhost:5000/api/income",
-      data: {
-        category: this.state.categoryIncome,
-        amount: Math.abs(this.state.amount),
-        date: this.state.date
-      }
-    });
-    this.setState({
-      amount: 0
-    });
+    console.log("Data fetched");
   };
 
   render() {
@@ -159,42 +86,25 @@ export default class App extends React.Component {
           <Container style={{ marginTop: "10vh" }} fixed>
             <Switch>
               <Route path="/expenses">
+
                 <TableData
-                  handleClick={this.handleClick}
-                  currentPage={this.state.currentPage}
-                  todosPerPage={this.state.todosPerPage}
+                  type={"expense"}
+                  fetchData={this.fetchData}
+                  columns={this.state.expensesColumn}
                   data={this.state.expenses}
-                  deleteData={this.deleteData}
+                  title={"Expenses"}
                 />
-                <Form
-                  onSubmit={this.onSubmit}
-                  onChange={this.onChangeAmount}
-                  onChangeCategory={this.onChangeCategory}
-                  onChangeDate={this.onChangeDate}
-                  categorySets={this.state.expenseCategory}
-                  amount={this.state.amount}
-                  date={this.state.date}
-                  category={this.state.category}
-                ></Form>
+
               </Route>
               <Route path="/incomes">
                 <TableData
-                  handleClick={this.handleClick}
-                  currentPage={this.state.currentPage}
-                  todosPerPage={this.state.todosPerPage}
+                  type={"income"}
+                  fetchData={this.fetchData}
+                  columns={this.state.incomesColumn}
                   data={this.state.incomes}
-                  deleteData={this.deleteDataIncome}
+                  title={"Incomes"}
                 />
-                <Form
-                  onSubmit={this.onSubmitIncome}
-                  onChange={this.onChangeAmount}
-                  onChangeCategory={this.onChangeCategoryIncome}
-                  onChangeDate={this.onChangeDate}
-                  categorySets={this.state.incomeCategory}
-                  amount={this.state.amount}
-                  date={this.state.date}
-                  category={this.state.categoryIncome}
-                ></Form>
+
               </Route>
 
               <Route exact path="/">
@@ -208,7 +118,7 @@ export default class App extends React.Component {
                   <Grid item xs sm={12} lg={6}>
                     <Paper
                       elevation={2}
-                      style={{ height: "40vh", padding: "20px" }}
+                      style={{ padding: "5%" }}
                     >
                       <RoundChart
                         data={this.state.expenses}
@@ -217,7 +127,7 @@ export default class App extends React.Component {
                     </Paper>
                   </Grid>
                   <Grid item xs sm={12} lg={12}>
-                    <Paper elevation={2}>
+                    <Paper elevation={2} style={{ padding: "5%" }}>
                       <LineChart
                         months={this.state.months}
                         data={this.state.expenses}
