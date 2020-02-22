@@ -38,14 +38,35 @@ export default class App extends React.Component {
       expenseCategory: ["Food", "Home", "Transport", "Health", "Fun", "Other"],
       incomeCategory: ["Salary", "Gift", "Other"],
       expensesColumn: [
-        { title: 'Date', field: 'date', type: "date", initialEditValue: new Date() },
-        { title: 'Category', field: 'category', lookup: { Food: "Food", Home: "Home", Transport: "Transport", Health: "Health", Fun: "Fun", Other: "Other" }, initialEditValue: "Food" },
-        { field: 'amount', type: "currency" },
+        {
+          title: "Date",
+          field: "date",
+          type: "date",
+          initialEditValue: new Date()
+        },
+        {
+          title: "Category",
+          field: "category",
+          lookup: {
+            Food: "Food",
+            Home: "Home",
+            Transport: "Transport",
+            Health: "Health",
+            Fun: "Fun",
+            Other: "Other"
+          },
+          initialEditValue: "Food"
+        },
+        { field: "amount", type: "currency" }
       ],
       incomesColumn: [
-        { title: 'Date', field: 'date', type: "date" },
-        { title: 'Category', field: 'category', lookup: { Salary: "Salary", Gift: "Gift", Other: "Other" } },
-        { field: 'amount', type: 'currency' },
+        { title: "Date", field: "date", type: "date" },
+        {
+          title: "Category",
+          field: "category",
+          lookup: { Salary: "Salary", Gift: "Gift", Other: "Other" }
+        },
+        { field: "amount", type: "currency" }
       ]
     };
   }
@@ -83,7 +104,6 @@ export default class App extends React.Component {
           <Container style={{ marginTop: "10vh" }} fixed>
             <Switch>
               <Route path="/expenses">
-
                 <TableData
                   type={"expense"}
                   fetchData={this.fetchData}
@@ -91,7 +111,6 @@ export default class App extends React.Component {
                   data={this.state.expenses}
                   title={"Expenses"}
                 />
-
               </Route>
               <Route path="/incomes">
                 <TableData
@@ -101,22 +120,18 @@ export default class App extends React.Component {
                   data={this.state.incomes}
                   title={"Incomes"}
                 />
-
               </Route>
 
               <Route exact path="/">
                 <Grid container spacing={3}>
-                  <Grid item xs sm={12} lg={6}>
+                  <Grid item xs sm={12} lg={12}>
                     <InfoCard
                       expenseData={this.state.expenses}
                       incomeData={this.state.incomes}
                     />
                   </Grid>
-                  <Grid item xs sm={12} lg={6}>
-                    <Paper
-                      elevation={2}
-                      style={{ padding: "5%" }}
-                    >
+                  <Grid item xs sm={12} lg={12}>
+                    <Paper elevation={2} style={{ padding: "5%" }}>
                       <RoundChart
                         data={this.state.expenses}
                         categorySets={this.state.expenseCategory}

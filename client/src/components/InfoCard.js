@@ -12,7 +12,7 @@ const InfoCard = props => {
     .map(item => item.amount)
     .reduce((x, y) => x + y, 0);
   return (
-    <Paper style={{ padding: "5%" }}>
+    <Paper style={{ padding: "3%", textAlign: "center" }}>
       <Typography color="primary" variant="h3">
         Balance
       </Typography>
