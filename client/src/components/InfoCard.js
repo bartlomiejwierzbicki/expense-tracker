@@ -13,21 +13,18 @@ const InfoCard = props => {
     .reduce((x, y) => x + y, 0);
   return (
     <Paper style={{ padding: "3%", textAlign: "center" }}>
-      <Typography color="primary" variant="h3">
-        Balance
+      <Typography color="textSecondary" variant="h5">
+        Incomes Sum: {income} $
       </Typography>
       <Typography color="textSecondary" variant="h5">
-        Incomes Sum: {income} PLN
-      </Typography>
-      <Typography color="textSecondary" variant="h5">
-        Expenses Sum: {expense} PLN
+        Expenses Sum: {expense} $
       </Typography>
       <Divider></Divider>
       <Typography
         variant="h5"
         style={income + expense >= 0 ? { color: "green" } : { color: "red" }}
       >
-        <b>TOTAL: {income + expense} PLN</b>
+        <b>TOTAL: {income + expense} $</b>
       </Typography>
     </Paper>
   );

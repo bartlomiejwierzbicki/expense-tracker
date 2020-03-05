@@ -9,7 +9,7 @@ const TableData = props => {
       title={props.title}
       columns={props.columns}
       data={props.data}
-      options={{ pageSize: 10 }}
+      options={{ pageSize: 5 }}
       editable={{
         onRowAdd: newData =>
           new Promise((resolve, reject) => {

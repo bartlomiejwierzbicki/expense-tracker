@@ -21,7 +21,6 @@ mongoose
 //ROUTES
 app.use("/api/expense", require("./routes/api/expense"));
 app.use("/api/income", require("./routes/api/income"));
-//app.use("/api/users", require("./routes/api/users"));
 
 const port = process.env.PORT || 5000;
 
