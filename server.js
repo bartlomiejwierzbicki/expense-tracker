@@ -10,6 +10,7 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
+//Test
 mongoose
   .connect(process.env.DB_CONNECTION, {
     useNewUrlParser: true,
