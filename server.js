@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 
 //Test
 mongoose
-  .connect(process.env.DB_CONNECTION, {
+  .connect(`mongodb+srv://${process.env.LOGIN}:${process.env.PASSWORD}@tutorial-frvdh.mongodb.net/test?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
