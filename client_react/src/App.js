@@ -30,7 +30,7 @@ export default class App extends React.Component {
         "September",
         "October",
         "November",
-        "December"
+        "December",
       ],
       expenses: [],
       incomes: [],
@@ -41,7 +41,7 @@ export default class App extends React.Component {
           title: "Date",
           field: "date",
           type: "date",
-          initialEditValue: new Date()
+          initialEditValue: new Date(),
         },
         {
           title: "Category",
@@ -52,21 +52,21 @@ export default class App extends React.Component {
             Transport: "Transport",
             Health: "Health",
             Fun: "Fun",
-            Other: "Other"
+            Other: "Other",
           },
-          initialEditValue: "Food"
+          initialEditValue: "Food",
         },
-        { field: "amount", type: "currency" }
+        { field: "amount", type: "currency" },
       ],
       incomesColumn: [
         { title: "Date", field: "date", type: "date" },
         {
           title: "Category",
           field: "category",
-          lookup: { Salary: "Salary", Gift: "Gift", Other: "Other" }
+          lookup: { Salary: "Salary", Gift: "Gift", Other: "Other" },
         },
-        { field: "amount", type: "currency" }
-      ]
+        { field: "amount", type: "currency" },
+      ],
     };
   }
 
@@ -78,17 +78,17 @@ export default class App extends React.Component {
     axios
       .all([
         axios.get("http://localhost:5000/api/expense"),
-        axios.get("http://localhost:5000/api/income")
+        axios.get("http://localhost:5000/api/income"),
       ])
       .then(
         axios.spread((...responses) => {
           this.setState({
             expenses: responses[0].data,
-            incomes: responses[1].data
+            incomes: responses[1].data,
           });
         })
       )
-      .catch(errors => {
+      .catch((errors) => {
         console.log("Error");
       });
   };
