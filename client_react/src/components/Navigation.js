@@ -20,7 +20,6 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
-import BarChartIcon from "@material-ui/icons/BarChart";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 
 const drawerWidth = 240;
@@ -201,19 +200,6 @@ export default function Navigation() {
                 <AttachMoneyIcon></AttachMoneyIcon>
               </ListItemIcon>
               <ListItemText primary={"Incomes"} />
-            </ListItem>
-          </List>
-        </NavLink>
-        <NavLink
-          to="/reports"
-          style={{ textDecoration: "none", color: "black" }}
-        >
-          <List>
-            <ListItem button key={3}>
-              <ListItemIcon>
-                <BarChartIcon></BarChartIcon>
-              </ListItemIcon>
-              <ListItemText primary={"Reports"} />
             </ListItem>
           </List>
         </NavLink>
