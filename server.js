@@ -12,12 +12,15 @@ app.use(bodyParser.json());
 
 //Test
 mongoose
-  .connect(`mongodb+srv://${process.env.LOGIN}:${process.env.PASSWORD}@tutorial-frvdh.mongodb.net/test?retryWrites=true&w=majority`, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
+  .connect(
+    `mongodb+srv://${process.env.LOGIN}:${process.env.PASSWORD}@tutorial-frvdh.mongodb.net/test?retryWrites=true&w=majority`,
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => console.log("MongoDB connected"))
-  .catch(err => console.log(err));
+  .catch((err) => console.log(err));
 
 //ROUTES
 app.use("/api/expense", require("./routes/api/expense"));

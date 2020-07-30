@@ -97,8 +97,7 @@ export default class App extends React.Component {
     return (
       <Router>
         <div style={{ display: "flex" }}>
-          
-	  <Navigation />
+          <Navigation />
 
           <Container style={{ marginTop: "10vh" }} fixed>
             <Switch>
